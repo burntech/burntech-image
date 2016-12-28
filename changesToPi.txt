@@ -45,7 +45,9 @@ sudo apt-get upgrade
 
 #### script to adjust AP vars....
 
-created network_config.pl
+created /home/pi/burntech_config.pl
+
+sudo ./burntech_config.pl
 
 #### install the carnival server!
 
