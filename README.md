@@ -1,5 +1,5 @@
 # burntech-image
-pre-configured standard burntech server
+"burntech1.0.img.zip" is a largely pre-configured standard burntech server.  This repository currently provides documentation.
 
 What is this image?
 
