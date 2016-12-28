@@ -1,0 +1,46 @@
+
+CREATING AN SD CARD FROM A .img FILE
+
+    Insert new card (it can be any card, but you *will* erase it).
+
+    Make sure your adaptor is unlocked.
+
+    Once inserted, unmount all mounted partitions.
+
+    Try this if you're using an adaptor on an existing image:
+
+        sudo umount /dev/mmblk0p2 /dev/mmblk0p1
+
+
+    Then create a new image, like so
+
+        sudo dd bs=4M if=burntech1.0.img of=/dev/mmcblk0
+
+        sudo dd bs=4M if=cnfcv4.img | pv | sudo dd of=/dev/mmcblk0 bs=4M 
+    
+        sudo dd bs=4M if=2016-11-25-raspbian-jessie-lite.img | pv | sudo dd of=/dev/mmcblk0 bs=4M 
+
+
+
+CREATING A .img FILE FROM YOUR PI SD CARD
+
+    You may need to log in to the pi, and "sudo shutdown -h now"
+    to get a clean image.
+
+    for the first step, lock the adaptor, but leave the card 
+    mounted (should be two directories if this is an existing pi system):
+
+        sudo dd bs=4M if=/dev/mmcblk0 | pv | sudo dd of=cnfcv5.img
+
+    NOTE:  
+
+    To make an image smaller than your SD card, you need to shrink your image 
+    (try gparted), then ascertain how many sectors you actually need to copy
+    (try sudo fdisk -l /dev/mmcblk0 or similar), then use dd to only copy that much:
+
+        sudo dd if=/dev/mmcblk0 of=burntech.img bs=512 count=[number of last sector from fdisk+1]
+
+
+    See this thread for more details:
+
+http://raspberrypi.stackexchange.com/questions/8305/how-to-make-an-image-img-from-whats-on-the-sd-card-but-as-compact-as-the-or

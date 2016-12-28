@@ -1,0 +1,39 @@
+How to set up your own rPi3 (or similar) BurnTech Server:
+
+1) Download "burntech1.0.img.zip" from the Google Drive:
+
+
+2) Uncompress this file, and write it onto an SD card of 2GB (or larger).
+
+
+  If you know what you're doing, this is likely to work:
+
+      % sudo dd bs=4M if=burntech1.0.img of=/dev/mmcblk0
+
+  If not, or for a refresher, there are a bazillion ways to do it here:
+
+      http://elinux.org/RPi_Easy_SD_Card_Setup
+
+3) Put this card in your (ideally) Raspberry Pi 3, and give it power.
+
+4) Give it a moment, then log on to your new wireless router:
+
+   ssid:  BurnTech
+   pw:    Password!
+
+5) ssh to your new server:
+
+   % ssh pi@192.168.10.1
+
+   pw:   raspberry
+
+
+   NOTE:  This is now a fully functional wireless access point.  If you
+   hook up an ethernet cable from the pi to your existing router, you can
+   log onto this server, and surf the web.
+
+
+6) Configure your wireless as you see fit, and makes some other useful
+   improvements.  Now you have a server!
+
+   % sudo ./burntech_config.pl

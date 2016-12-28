@@ -1,0 +1,74 @@
+
+# started with 2016-11-25-raspbian-jessie-lite.img.gz, ran md5sum check
+
+# via raspi-config
+set locale to be US
+set keyboard to be default generic US english
+
+# installed basic packages for making a wireless access point
+sudo apt-get update
+sudo apt-get -y install hostapd isc-dhcp-server iptables wpasupplicant
+
+# added packages for mqtt and http (plus vim, because) 
+sudo apt-get -y install mosquitto nginx vim
+
+# added git-core, because that's a good thing.
+sudo apt-get -y install git-core
+
+# files added or modified (these three contain the network settings):
+/etc/hostapd/hostapd.conf
+/etc/dhcp/dhcp.conf
+/etc/network/interfaces
+
+# more files added or modified (to create the access point, no need to re-modify):
+/etc/default/hostapd
+/etc/default/isc-dhcp-server
+/etc/sysctl.conf
+/etc/iptables.ipv4.nat
+
+# modified to lower boot time when no eth0 cable present
+/lib/systemd/system/networking.service.d/network-pre.conf
+
+# tie eth0 and wlan0 together for network masquerading, make standard at boot:
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT  
+sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
+# enable dhcp and the access point
+sudo update-rc.d hostapd enable
+sudo update-rc.d isc-dhcp-server enable 
+
+# upgrade to latest everything
+sudo apt-get update
+sudo apt-get upgrade
+
+#### script to adjust AP vars....
+
+created network_config.pl
+
+#### install the carnival server!
+
+Created and populated: /home/pi/code/xc-socket-server/
+
+Also added code/wiringPi-b1dfc18, and built the library.
+
+Finally, from the xc-socket-server directory, compiled 
+and linked in server, set to run at boot, compiled and linked
+in but-client, but left disabled:
+
+    gcc -o xc-socket-server xc-socket-server.c -lpthread -lrt -Wall
+    gcc -o but-client but-client.c -lpthread -lrt -lwiringPi -Wall
+
+    sudo ln -s /home/pi/code/xc-socket-server/xc-socket-server /usr/sbin/
+    sudo ln -s /home/pi/code/xc-socket-server/initscrips/xc-socket-serverd /etc/init.d/
+
+    sudo update-rc.d xc-socket-serverd defaults
+
+    
+    sudo ln -s /home/pi/code/xc-socket-server/but-client /usr/sbin/
+    sudo ln -s /home/pi/code/xc-socket-server/initscrips/but-clientd /etc/init.d/
+
+to enable the button on the pi:
+
+    sudo update-rc.d but_clientd defaults
