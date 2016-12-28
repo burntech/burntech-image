@@ -20,4 +20,8 @@ What is this image?
 
     (see changesToPi for a more comprehensive list of things done to the stock image)
 
+NOTE:  This image is 550MB compressed, and is available on the Google Drive.  I'm
+pretty sure posting the Google Drive location here would make it accesible to 
+planet Earth, so we're not doing that.
+
 
